@@ -718,10 +718,8 @@ class TableMetadata(object):
         if len(self.partition_key) > 1 or self.clustering_key:
             ret += "%s%sPRIMARY KEY (" % (column_join, padding)
 
-            if len(self.partition_key) > 1:
-                ret += "(%s)" % ", ".join(protect_name(col.name) for col in self.partition_key)
-            else:
-                ret += self.partition_key[0].name
+            # Changed as part of CASSANDRA-7274
+            ret += "(%s)" % ", ".join(protect_name(col.name) for col in self.partition_key)
 
             if self.clustering_key:
                 ret += ", %s" % ", ".join(protect_name(col.name) for col in self.clustering_key)
